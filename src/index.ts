@@ -24,6 +24,9 @@ const DOWNLOAD_DIR_PREFIX = 'amzscr';
 const LOGIN_STEP_DELAY = 1000;
 const LOGIN_TYPING_DELAY = 200;
 
+// 90 second timeout
+const NAVIGATION_TIMEOUT = 90000;
+
 puppeteer.use(StealthPlugin());
 
 interface ReportItem {
@@ -604,7 +607,7 @@ export class AmazonOrderReportsApi {
     }).toString();
 
     this.#logger.debug(`Navigating to ${url}`);
-    const response = await page.goto(url);
+    const response = await page.goto(url, { timeout: NAVIGATION_TIMEOUT });
     if (!response?.ok()) {
       throw new Error(`Failed request while loading ${path}`);
     }
